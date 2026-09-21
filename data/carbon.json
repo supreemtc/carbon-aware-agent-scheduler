@@ -1,1 +1,90 @@
-[]
+{
+  "asia-south1": [
+    {
+      "window_id": "win-asia-south1-0s",
+      "scheduled_offset_seconds": 0,
+      "carbon_multiplier": 1.0
+    },
+    {
+      "window_id": "win-asia-south1-15s",
+      "scheduled_offset_seconds": 15,
+      "carbon_multiplier": 0.85
+    },
+    {
+      "window_id": "win-asia-south1-30s",
+      "scheduled_offset_seconds": 30,
+      "carbon_multiplier": 0.72
+    },
+    {
+      "window_id": "win-asia-south1-60s",
+      "scheduled_offset_seconds": 60,
+      "carbon_multiplier": 0.60
+    }
+  ],
+  "europe-north1": [
+    {
+      "window_id": "win-europe-north1-0s",
+      "scheduled_offset_seconds": 0,
+      "carbon_multiplier": 1.0
+    },
+    {
+      "window_id": "win-europe-north1-15s",
+      "scheduled_offset_seconds": 15,
+      "carbon_multiplier": 0.92
+    },
+    {
+      "window_id": "win-europe-north1-30s",
+      "scheduled_offset_seconds": 30,
+      "carbon_multiplier": 0.84
+    },
+    {
+      "window_id": "win-europe-north1-60s",
+      "scheduled_offset_seconds": 60,
+      "carbon_multiplier": 0.76
+    }
+  ],
+  "us-central1": [
+    {
+      "window_id": "win-us-central1-0s",
+      "scheduled_offset_seconds": 0,
+      "carbon_multiplier": 1.0
+    },
+    {
+      "window_id": "win-us-central1-15s",
+      "scheduled_offset_seconds": 15,
+      "carbon_multiplier": 0.88
+    },
+    {
+      "window_id": "win-us-central1-30s",
+      "scheduled_offset_seconds": 30,
+      "carbon_multiplier": 0.74
+    },
+    {
+      "window_id": "win-us-central1-60s",
+      "scheduled_offset_seconds": 60,
+      "carbon_multiplier": 0.62
+    }
+  ],
+  "northamerica-northeast1": [
+    {
+      "window_id": "win-northamerica-northeast1-0s",
+      "scheduled_offset_seconds": 0,
+      "carbon_multiplier": 1.0
+    },
+    {
+      "window_id": "win-northamerica-northeast1-15s",
+      "scheduled_offset_seconds": 15,
+      "carbon_multiplier": 0.95
+    },
+    {
+      "window_id": "win-northamerica-northeast1-30s",
+      "scheduled_offset_seconds": 30,
+      "carbon_multiplier": 0.90
+    },
+    {
+      "window_id": "win-northamerica-northeast1-60s",
+      "scheduled_offset_seconds": 60,
+      "carbon_multiplier": 0.85
+    }
+  ]
+}

@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "model_id": "gemini-1.5-pro",
+    "model_name": "Gemini 1.5 Pro (Simulated Demo Profile)",
+    "accuracy_score": 0.92,
+    "average_latency_ms": 1200.0,
+    "cost_per_1k_tokens": 0.00125,
+    "energy_wh_per_1k_tokens": 0.18,
+    "context_window": 2000000
+  },
+  {
+    "model_id": "gemini-1.5-flash",
+    "model_name": "Gemini 1.5 Flash (Simulated Demo Profile)",
+    "accuracy_score": 0.85,
+    "average_latency_ms": 350.0,
+    "cost_per_1k_tokens": 0.00015,
+    "energy_wh_per_1k_tokens": 0.05,
+    "context_window": 1000000
+  },
+  {
+    "model_id": "gemini-1.5-flash-8b",
+    "model_name": "Gemini 1.5 Flash-8B (Simulated Demo Profile)",
+    "accuracy_score": 0.78,
+    "average_latency_ms": 180.0,
+    "cost_per_1k_tokens": 0.000075,
+    "energy_wh_per_1k_tokens": 0.02,
+    "context_window": 1000000
+  }
+]

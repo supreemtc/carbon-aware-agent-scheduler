@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "region_id": "asia-south1",
+    "region_name": "Asia South (Mumbai, India) - Low Latency Hub",
+    "base_latency_ms": 25.0,
+    "carbon_intensity_gco2_kwh": 580.0
+  },
+  {
+    "region_id": "europe-north1",
+    "region_name": "Europe North (Hamina, Finland) - Clean Nuclear/Hydro Grid",
+    "base_latency_ms": 140.0,
+    "carbon_intensity_gco2_kwh": 35.0
+  },
+  {
+    "region_id": "us-central1",
+    "region_name": "US Central (Iowa, USA) - High Wind Energy Grid",
+    "base_latency_ms": 190.0,
+    "carbon_intensity_gco2_kwh": 320.0
+  },
+  {
+    "region_id": "northamerica-northeast1",
+    "region_name": "North America Northeast (Montreal, Canada) - Clean Hydro Grid",
+    "base_latency_ms": 210.0,
+    "carbon_intensity_gco2_kwh": 28.0
+  }
+]
