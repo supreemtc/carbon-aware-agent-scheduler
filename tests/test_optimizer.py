@@ -270,3 +270,40 @@ def test_identical_metric_values_do_not_cause_division_by_zero(standard_task):
     assert isinstance(step, ScheduledStep)
     assert 0.0 <= step.score <= 1.0
     assert step.score > 0.0
+def test_delay_tolerance_is_enforced(standard_task, sample_models, sample_regions):
+    windows_with_later_options = [
+        ExecutionWindow(
+            window_id="win-0s",
+            scheduled_offset_seconds=0,
+            carbon_multiplier=1.0,
+        ),
+        ExecutionWindow(
+            window_id="win-15s",
+            scheduled_offset_seconds=15,
+            carbon_multiplier=0.85,
+        ),
+        ExecutionWindow(
+            window_id="win-30s",
+            scheduled_offset_seconds=30,
+            carbon_multiplier=0.70,
+        ),
+        ExecutionWindow(
+            window_id="win-60s",
+            scheduled_offset_seconds=60,
+            carbon_multiplier=0.50,
+        ),
+    ]
+
+    step = optimize_task(
+        task=standard_task,
+        models=sample_models,
+        regions=sample_regions,
+        windows=windows_with_later_options,
+        latency_importance=0.20,
+        cost_importance=0.20,
+        carbon_importance=0.30,
+        energy_importance=0.15,
+        accuracy_importance=0.15,
+    )
+
+    assert step.scheduled_offset_seconds <= standard_task.delay_tolerance_seconds

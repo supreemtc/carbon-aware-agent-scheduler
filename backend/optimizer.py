@@ -158,6 +158,8 @@ def optimize_task(
                     continue
                 if estimated_latency_ms > deadline_ms:
                     continue
+                if window.scheduled_offset_seconds > task.delay_tolerance_seconds:
+                    continue
 
                 feasible_candidates.append(
                     _CandidateEvaluation(
