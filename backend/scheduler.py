@@ -2,11 +2,12 @@
 
 Coordinates data loading, invokes the optimization engine for each workflow task,
 and aggregates individual scheduled steps into a complete ExecutionPlan.
+Includes benchmark comparison against a highest-accuracy baseline.
 """
 
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from backend.models import (
     ExecutionPlan,
@@ -17,7 +18,7 @@ from backend.models import (
     WorkflowRequest,
     WorkflowTask,
 )
-from backend.optimizer import optimize_task
+from backend.optimizer import optimize_task, select_baseline_candidate
 
 
 def _resolve_data_dir(custom_path: Optional[Path] = None) -> Path:
@@ -118,7 +119,7 @@ def schedule_workflow(
     - all available models from models.json
     - all available regions from regions.json
     - carbon windows from carbon.json
-    - workflow importance weights (latency, cost, carbon, energy)
+    - workflow importance weights (accuracy, latency, cost, carbon, energy)
 
     Args:
         workflow: The WorkflowRequest instance (or valid dict representation).
@@ -140,7 +141,7 @@ def schedule_workflow(
 
     scheduled_steps: List[ScheduledStep] = []
 
-    # Optimize each task independently
+    # Optimize each task independently using multi-objective scoring
     for task in workflow.tasks:
         scheduled_step = optimize_task(
             task=task,
@@ -151,6 +152,7 @@ def schedule_workflow(
             cost_importance=workflow.cost_importance,
             carbon_importance=workflow.carbon_importance,
             energy_importance=workflow.energy_importance,
+            accuracy_importance=workflow.accuracy_importance,
         )
         scheduled_steps.append(scheduled_step)
 
@@ -166,3 +168,96 @@ def schedule_workflow(
         total_estimated_carbon_g=total_carbon_g,
         scheduled_steps=scheduled_steps,
     )
+
+
+def schedule_baseline_workflow(
+    workflow: Union[WorkflowRequest, dict],
+    data_dir: Optional[Path] = None,
+) -> ExecutionPlan:
+    """Schedule workflow tasks using the highest-accuracy feasible option benchmark heuristic.
+
+    Strictly satisfies the same hard constraints (accuracy and deadline).
+
+    Args:
+        workflow: The WorkflowRequest instance (or valid dict representation).
+        data_dir: Optional path to directory with mock data JSON files.
+
+    Returns:
+        ExecutionPlan representing the baseline schedule.
+
+    Raises:
+        RuntimeError: If mock data files cannot be loaded.
+        ValueError: If any task has no feasible candidate.
+    """
+    if isinstance(workflow, dict):
+        workflow = WorkflowRequest.model_validate(workflow)
+
+    models, regions, carbon_windows = load_scheduler_data(data_dir=data_dir)
+    scheduled_steps: List[ScheduledStep] = []
+
+    for task in workflow.tasks:
+        baseline_step = select_baseline_candidate(
+            task=task,
+            models=models,
+            regions=regions,
+            windows=carbon_windows,
+        )
+        scheduled_steps.append(baseline_step)
+
+    total_cost = round(sum(step.estimated_cost for step in scheduled_steps), 6)
+    total_energy_wh = round(sum(step.estimated_energy_wh for step in scheduled_steps), 6)
+    total_carbon_g = round(sum(step.estimated_carbon_g for step in scheduled_steps), 6)
+
+    return ExecutionPlan(
+        workflow_id=workflow.workflow_id,
+        total_estimated_cost=total_cost,
+        total_estimated_energy_wh=total_energy_wh,
+        total_estimated_carbon_g=total_carbon_g,
+        scheduled_steps=scheduled_steps,
+    )
+
+
+def compare_workflow(
+    workflow: Union[WorkflowRequest, dict],
+    data_dir: Optional[Path] = None,
+) -> Dict[str, Any]:
+    """Compare multi-objective optimized schedule against the highest-accuracy baseline schedule.
+
+    Args:
+        workflow: The WorkflowRequest instance.
+        data_dir: Optional path to directory with mock data JSON files.
+
+    Returns:
+        Dictionary containing both plans and percentage/absolute savings.
+    """
+    if isinstance(workflow, dict):
+        workflow = WorkflowRequest.model_validate(workflow)
+
+    optimized_plan = schedule_workflow(workflow, data_dir=data_dir)
+    baseline_plan = schedule_baseline_workflow(workflow, data_dir=data_dir)
+
+    cost_saving = baseline_plan.total_estimated_cost - optimized_plan.total_estimated_cost
+    energy_saving = baseline_plan.total_estimated_energy_wh - optimized_plan.total_estimated_energy_wh
+    carbon_saving = baseline_plan.total_estimated_carbon_g - optimized_plan.total_estimated_carbon_g
+
+    cost_pct = (cost_saving / baseline_plan.total_estimated_cost * 100.0) if baseline_plan.total_estimated_cost > 0 else 0.0
+    energy_pct = (energy_saving / baseline_plan.total_estimated_energy_wh * 100.0) if baseline_plan.total_estimated_energy_wh > 0 else 0.0
+    carbon_pct = (carbon_saving / baseline_plan.total_estimated_carbon_g * 100.0) if baseline_plan.total_estimated_carbon_g > 0 else 0.0
+
+    return {
+        "workflow_id": workflow.workflow_id,
+        "optimized_plan": optimized_plan,
+        "baseline_plan": baseline_plan,
+        "comparison": {
+            "cost_savings_pct": round(cost_pct, 2),
+            "energy_savings_pct": round(energy_pct, 2),
+            "carbon_savings_pct": round(carbon_pct, 2),
+            "cost_delta": round(cost_saving, 6),
+            "energy_delta_wh": round(energy_saving, 6),
+            "carbon_delta_g": round(carbon_saving, 6),
+        },
+        "summary": (
+            f"Optimized schedule achieves {carbon_pct:.1f}% estimated simulated carbon reduction "
+            f"and {cost_pct:.1f}% estimated cost reduction relative to the highest-accuracy feasible baseline."
+        ),
+    }

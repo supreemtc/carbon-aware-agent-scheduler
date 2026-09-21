@@ -220,7 +220,8 @@ def test_single_candidate_works(standard_task, sample_models, sample_regions, sa
     assert isinstance(step, ScheduledStep)
     assert step.selected_model == single_model[0].model_id
     assert step.selected_region == single_region[0].region_id
-    assert step.score == 0.0
+    assert 0.0 <= step.score <= 1.0
+    assert step.score > 0.0
 
 
 def test_identical_metric_values_do_not_cause_division_by_zero(standard_task):
@@ -267,4 +268,5 @@ def test_identical_metric_values_do_not_cause_division_by_zero(standard_task):
         windows=identical_windows,
     )
     assert isinstance(step, ScheduledStep)
-    assert step.score == 0.0
+    assert 0.0 <= step.score <= 1.0
+    assert step.score > 0.0

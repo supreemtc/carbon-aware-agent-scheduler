@@ -37,28 +37,34 @@ class WorkflowRequest(BaseModel):
     workflow_id: str = Field(..., description="Unique identifier for the workflow execution")
     tasks: List[WorkflowTask] = Field(..., min_length=1, description="List of tasks to schedule (at least 1 required)")
     latency_importance: float = Field(
-        ...,
+        default=0.20,
         ge=0.0,
         le=1.0,
         description="Optimization weight for latency (0.0 to 1.0)",
     )
     cost_importance: float = Field(
-        ...,
+        default=0.20,
         ge=0.0,
         le=1.0,
         description="Optimization weight for cost (0.0 to 1.0)",
     )
     carbon_importance: float = Field(
-        ...,
+        default=0.15,
         ge=0.0,
         le=1.0,
         description="Optimization weight for carbon emissions (0.0 to 1.0)",
     )
     energy_importance: float = Field(
-        ...,
+        default=0.15,
         ge=0.0,
         le=1.0,
         description="Optimization weight for energy consumption (0.0 to 1.0)",
+    )
+    accuracy_importance: float = Field(
+        default=0.30,
+        ge=0.0,
+        le=1.0,
+        description="Optimization weight for accuracy (0.0 to 1.0)",
     )
 
 

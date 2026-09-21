@@ -1,0 +1,185 @@
+{
+  "disclaimer": "All carbon emissions, energy consumption, latency, and cost numbers are synthetic demo prototype values for HackDays in MSRIT and do not represent real-world infrastructure measurements.",
+  "workflow_requirements": {
+    "workflow_id": "wf-hackdays-campus-sustainability-001",
+    "tasks": [
+      {
+        "step_id": "step-1-summarize-energy-audit",
+        "task_type": "summarization",
+        "description": "Summarize MSRIT campus building sensor energy logs",
+        "input_text": "Detailed HVAC and solar generation telemetry logs across campus departments...",
+        "estimated_tokens": 1500,
+        "minimum_accuracy": 0.8,
+        "deadline_seconds": 4,
+        "delay_tolerance_seconds": 30,
+        "priority": "normal"
+      },
+      {
+        "step_id": "step-2-optimize-dispatch-plan",
+        "task_type": "decision_analysis",
+        "description": "Analyze dispatch schedules for campus renewable batteries",
+        "input_text": "Battery charge cycles, forecast solar irradiance, and peak grid hours...",
+        "estimated_tokens": 2500,
+        "minimum_accuracy": 0.85,
+        "deadline_seconds": 5,
+        "delay_tolerance_seconds": 60,
+        "priority": "high"
+      }
+    ],
+    "accuracy_importance": 0.3,
+    "latency_importance": 0.2,
+    "cost_importance": 0.2,
+    "carbon_importance": 0.15,
+    "energy_importance": 0.15
+  },
+  "endpoint_results": {
+    "GET /health": {
+      "status_code": 200,
+      "response": {
+        "status": "ok"
+      }
+    },
+    "GET /environment": {
+      "status_code": 200,
+      "summary": {
+        "available_models": [
+          "gemini-1.5-pro",
+          "gemini-1.5-flash",
+          "gemini-1.5-flash-8b"
+        ],
+        "available_regions": [
+          "asia-south1",
+          "europe-north1",
+          "us-central1",
+          "northamerica-northeast1"
+        ],
+        "execution_window_regions": [
+          "asia-south1",
+          "europe-north1",
+          "us-central1",
+          "northamerica-northeast1"
+        ]
+      }
+    },
+    "POST /plan": {
+      "status_code": 200,
+      "response": {
+        "workflow_id": "wf-hackdays-campus-sustainability-001",
+        "total_estimated_cost": 0.0006,
+        "total_estimated_energy_wh": 0.2,
+        "total_estimated_carbon_g": 0.00532,
+        "scheduled_steps": [
+          {
+            "step_id": "step-1-summarize-energy-audit",
+            "selected_model": "gemini-1.5-flash",
+            "selected_region": "europe-north1",
+            "scheduled_offset_seconds": 60,
+            "estimated_latency_ms": 490.0,
+            "estimated_accuracy": 0.85,
+            "estimated_cost": 0.000225,
+            "estimated_energy_wh": 0.075,
+            "estimated_carbon_g": 0.001995,
+            "score": 0.932574,
+            "reason": "Selected gemini-1.5-flash in europe-north1 at +60s because it satisfies the accuracy and latency constraints and provides the best weighted trade-off across accuracy, latency, cost, energy, and carbon."
+          },
+          {
+            "step_id": "step-2-optimize-dispatch-plan",
+            "selected_model": "gemini-1.5-flash",
+            "selected_region": "europe-north1",
+            "scheduled_offset_seconds": 60,
+            "estimated_latency_ms": 490.0,
+            "estimated_accuracy": 0.85,
+            "estimated_cost": 0.000375,
+            "estimated_energy_wh": 0.125,
+            "estimated_carbon_g": 0.003325,
+            "score": 0.932574,
+            "reason": "Selected gemini-1.5-flash in europe-north1 at +60s because it satisfies the accuracy and latency constraints and provides the best weighted trade-off across accuracy, latency, cost, energy, and carbon."
+          }
+        ]
+      }
+    },
+    "POST /compare": {
+      "status_code": 200,
+      "response": {
+        "workflow_id": "wf-hackdays-campus-sustainability-001",
+        "optimized_plan": {
+          "workflow_id": "wf-hackdays-campus-sustainability-001",
+          "total_estimated_cost": 0.0006,
+          "total_estimated_energy_wh": 0.2,
+          "total_estimated_carbon_g": 0.00532,
+          "scheduled_steps": [
+            {
+              "step_id": "step-1-summarize-energy-audit",
+              "selected_model": "gemini-1.5-flash",
+              "selected_region": "europe-north1",
+              "scheduled_offset_seconds": 60,
+              "estimated_latency_ms": 490.0,
+              "estimated_accuracy": 0.85,
+              "estimated_cost": 0.000225,
+              "estimated_energy_wh": 0.075,
+              "estimated_carbon_g": 0.001995,
+              "score": 0.932574,
+              "reason": "Selected gemini-1.5-flash in europe-north1 at +60s because it satisfies the accuracy and latency constraints and provides the best weighted trade-off across accuracy, latency, cost, energy, and carbon."
+            },
+            {
+              "step_id": "step-2-optimize-dispatch-plan",
+              "selected_model": "gemini-1.5-flash",
+              "selected_region": "europe-north1",
+              "scheduled_offset_seconds": 60,
+              "estimated_latency_ms": 490.0,
+              "estimated_accuracy": 0.85,
+              "estimated_cost": 0.000375,
+              "estimated_energy_wh": 0.125,
+              "estimated_carbon_g": 0.003325,
+              "score": 0.932574,
+              "reason": "Selected gemini-1.5-flash in europe-north1 at +60s because it satisfies the accuracy and latency constraints and provides the best weighted trade-off across accuracy, latency, cost, energy, and carbon."
+            }
+          ]
+        },
+        "baseline_plan": {
+          "workflow_id": "wf-hackdays-campus-sustainability-001",
+          "total_estimated_cost": 0.005,
+          "total_estimated_energy_wh": 0.72,
+          "total_estimated_carbon_g": 0.4176,
+          "scheduled_steps": [
+            {
+              "step_id": "step-1-summarize-energy-audit",
+              "selected_model": "gemini-1.5-pro",
+              "selected_region": "asia-south1",
+              "scheduled_offset_seconds": 0,
+              "estimated_latency_ms": 1225.0,
+              "estimated_accuracy": 0.92,
+              "estimated_cost": 0.001875,
+              "estimated_energy_wh": 0.27,
+              "estimated_carbon_g": 0.1566,
+              "score": 0.92,
+              "reason": "Selected highest-accuracy feasible baseline: gemini-1.5-pro in asia-south1 at +0s (accuracy: 0.9200, latency: 1225.0ms)."
+            },
+            {
+              "step_id": "step-2-optimize-dispatch-plan",
+              "selected_model": "gemini-1.5-pro",
+              "selected_region": "asia-south1",
+              "scheduled_offset_seconds": 0,
+              "estimated_latency_ms": 1225.0,
+              "estimated_accuracy": 0.92,
+              "estimated_cost": 0.003125,
+              "estimated_energy_wh": 0.45,
+              "estimated_carbon_g": 0.261,
+              "score": 0.92,
+              "reason": "Selected highest-accuracy feasible baseline: gemini-1.5-pro in asia-south1 at +0s (accuracy: 0.9200, latency: 1225.0ms)."
+            }
+          ]
+        },
+        "comparison": {
+          "cost_savings_pct": 88.0,
+          "energy_savings_pct": 72.22,
+          "carbon_savings_pct": 98.73,
+          "cost_delta": 0.0044,
+          "energy_delta_wh": 0.52,
+          "carbon_delta_g": 0.41228
+        },
+        "summary": "Optimized schedule achieves 98.7% estimated simulated carbon reduction and 88.0% estimated cost reduction relative to the highest-accuracy feasible baseline."
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@ Provides REST endpoints for submitting workflows, querying the simulated environ
 and checking service health.
 """
 
-from typing import Dict, List
+from typing import Any, Dict, List
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -16,7 +16,7 @@ from backend.models import (
     RegionProfile,
     WorkflowRequest,
 )
-from backend.scheduler import load_scheduler_data, schedule_workflow
+from backend.scheduler import compare_workflow, load_scheduler_data, schedule_workflow
 
 app = FastAPI(
     title="Carbon- and Latency-Aware Agent Workflow Scheduler",
@@ -86,4 +86,21 @@ def plan_workflow(workflow: WorkflowRequest) -> ExecutionPlan:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Internal scheduler error: {e}",
+        )
+
+
+@app.post("/compare", summary="Compare Optimized Schedule vs Baseline")
+def compare_plan_endpoint(workflow: WorkflowRequest) -> Dict[str, Any]:
+    """Receive a workflow request and return the optimized plan compared with the baseline."""
+    try:
+        return compare_workflow(workflow)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal comparison error: {e}",
         )
