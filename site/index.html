@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Carbon-Aware Agent Workflow Scheduler — an explainable multi-objective scheduler for AI workloads.">
+  <title>Carbon-Aware Agent Scheduler</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#">CARBON<span>·</span>AGENT</a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#results">Prototype</a>
+      <a href="#roadmap">Roadmap</a>
+      <a class="button small" href="https://github.com/supreemtc/carbon-aware-agent-scheduler">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">AI WORKFLOW SCHEDULING × SUSTAINABILITY</div>
+      <h1>Run AI workloads<br><span>smarter, not harder.</span></h1>
+      <p class="hero-copy">
+        An explainable scheduler that chooses model, compute region and execution window
+        while balancing carbon, latency, energy and cost under explicit task constraints.
+      </p>
+      <div class="actions">
+        <a class="button" href="https://github.com/supreemtc/carbon-aware-agent-scheduler">View source</a>
+        <a class="button secondary" href="https://github.com/supreemtc/carbon-aware-agent-scheduler/blob/main/README.md">Read documentation</a>
+      </div>
+      <p class="note">Prototype mode uses synthetic carbon, energy, latency and cost profiles.</p>
+    </section>
+
+    <section class="metrics" id="results">
+      <div><strong>98.73%</strong><span>reported simulated carbon reduction*</span></div>
+      <div><strong>88.0%</strong><span>reported simulated cost reduction*</span></div>
+      <div><strong>72.22%</strong><span>reported simulated energy reduction*</span></div>
+    </section>
+
+    <section id="how" class="section">
+      <div class="section-label">01 / PIPELINE</div>
+      <h2>From natural language to an execution plan.</h2>
+      <div class="pipeline">
+        <div class="card"><b>01</b><h3>Describe</h3><p>Express workload, accuracy, deadline and scheduling preferences.</p></div>
+        <div class="card"><b>02</b><h3>Structure</h3><p>Optional Gemini layer converts intent into a typed workflow request.</p></div>
+        <div class="card"><b>03</b><h3>Evaluate</h3><p>Generate model × region × time-window candidates.</p></div>
+        <div class="card"><b>04</b><h3>Schedule</h3><p>Filter infeasible candidates and select the lowest weighted score.</p></div>
+      </div>
+    </section>
+
+    <section class="section dark">
+      <div class="section-label">02 / OBJECTIVES</div>
+      <h2>Multiple objectives. One explainable decision.</h2>
+      <div class="objective-grid">
+        <div><span>LATENCY</span><p>Respect hard deadlines and network/inference delay.</p></div>
+        <div><span>CARBON</span><p>Prefer lower modeled grid carbon intensity and cleaner windows.</p></div>
+        <div><span>ENERGY</span><p>Account for modeled energy per 1K tokens.</p></div>
+        <div><span>COST</span><p>Account for modeled token economics.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <div class="section-label">03 / ENGINEERING</div>
+      <h2>Built as a foundation for a larger scheduler.</h2>
+      <div class="roadmap">
+        <div class="done">✓ Constraint-aware scheduling</div>
+        <div class="done">✓ Spatial + temporal carbon model</div>
+        <div class="done">✓ FastAPI service</div>
+        <div class="done">✓ Explainable plans</div>
+        <div>○ Pareto frontier</div>
+        <div>○ Workflow DAG scheduling</div>
+        <div>○ Live carbon provider</div>
+        <div>○ Measured energy telemetry</div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <h2>Explore the implementation.</h2>
+      <p>See the scheduler, data model, demo scenario, tests and engineering roadmap on GitHub.</p>
+      <a class="button" href="https://github.com/supreemtc/carbon-aware-agent-scheduler">Open repository →</a>
+    </section>
+  </main>
+
+  <footer>
+    <span>Carbon-Aware Agent Workflow Scheduler</span>
+    <span>Prototype • Open for improvement</span>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

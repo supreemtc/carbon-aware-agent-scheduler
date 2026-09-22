@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "Carbon-Aware Agent Workflow Scheduler"
+message: "If you use this project, please cite the repository."
+type: software
+authors:
+  - family-names: "TC"
+    given-names: "Supreem"
+repository-code: "https://github.com/supreemtc/carbon-aware-agent-scheduler"
+abstract: "A prototype scheduler for multi-agent AI workflows balancing carbon, latency, energy, cost and accuracy constraints."
+keywords:
+  - AI agents
+  - scheduling
+  - carbon-aware computing
+  - sustainability
+  - Gemini
+  - FastAPI
