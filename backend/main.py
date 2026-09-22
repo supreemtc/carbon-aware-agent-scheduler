@@ -17,7 +17,7 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from backend.gemini_planner import plan_from_text
+
 
 from backend.models import (
     ExecutionPlan,
@@ -99,27 +99,6 @@ def plan_workflow(workflow: WorkflowRequest) -> ExecutionPlan:
         )
 
 
-@app.post("/plan-from-text", response_model=ExecutionPlan, summary="Plan Workflow from Natural Language")
-def plan_workflow_from_text(user_request: str) -> ExecutionPlan:
-    """Convert a natural-language scheduling request into a WorkflowRequest, then schedule it."""
-    try:
-        workflow = plan_from_text(user_request)
-        return schedule_workflow(workflow)
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e),
-        )
-    except RuntimeError as e:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=str(e),
-        )
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Gemini planning error: {e}",
-        )
 
 
 @app.post("/compare", summary="Compare Optimized Schedule vs Baseline")
